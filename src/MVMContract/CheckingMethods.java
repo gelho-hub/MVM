@@ -47,7 +47,7 @@ public class CheckingMethods {
             inputNum = firstChoice;
             while(true){
                 if(inputNum == 0){
-                    System.out.println("Nem számot adtál meg. Kérlek próbáld újra!");
+                    System.out.println("Nem számot adtál meg. Kérlek próbáld újra az alábbiak közül!");
                     System.out.println(" ");
                     System.out.println("1 - Bejelentkezés");
                     System.out.println("2 - Regisztráció");

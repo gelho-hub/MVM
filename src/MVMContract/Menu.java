@@ -7,9 +7,11 @@ public class Menu {
         System.out.println("1 - Bejelentkezés");
         System.out.println("2 - Regisztráció");
 
-        int checked = CheckingMethods.programStartNumCheck();
+        //int checked = CheckingMethods.programStartNumCheck();
+
         boolean isSucceed = true;
         do {
+            int checked = CheckingMethods.programStartNumCheck();
             if (checked == 2) {
                 MVMContainer.createProfile();
                 //return true;
@@ -24,7 +26,7 @@ public class Menu {
             } else {
                 return false;
             }
-        } while (true);
+        } while (isSucceed);
     }
 
     public static void mainMenuList(int choice){

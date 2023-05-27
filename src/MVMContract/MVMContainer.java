@@ -4,6 +4,8 @@ package MVMContract;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class MVMContainer {
     public static ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -19,9 +21,9 @@ public class MVMContainer {
 
         for (int i = 0; i < customers.size(); i++) {
             while(true){
-                email = IO.sc.nextLine();
                 if(customers.get(i).getEmail().equals(email)){
-                    System.out.printf("Ilyen email címmel [%s] már regisztráltak profilt, kérlek próbáld újra!", email);
+                    System.out.printf("Ilyen email címmel [ %s ] már regisztráltak profilt, kérlek próbáld újra%n!", email);
+                    email = IO.sc.nextLine();
                 }else{break;}
             }
         }
@@ -73,25 +75,26 @@ public class MVMContainer {
 
         }
 
-        for (int i = 0; i < customers.size(); i++) {
-            if(customers.isEmpty()){
-                return true;
-            }
 
+        for (int i = 0; i < customers.size(); i++) {
             System.out.printf("Email cím: %n");
             emailaddress = IO.sc.nextLine();
 
             System.out.printf("Jelszó: %n");
             password = IO.sc.nextLine();
-            while(!customers.get(i).getEmail().equals(emailaddress) || !customers.get(i).getPassword().equals(password)){
-                System.out.println("Email cím vagy jelszó nem helyes, próbáld újra");
-                System.out.printf("Email cím: %n");
-                emailaddress = IO.sc.nextLine();
 
-                System.out.printf("Jelszó: %n");
-                password = IO.sc.nextLine();
+
+            Iterator<Customer> iterator = customers.iterator();
+            while (iterator.hasNext()) {
+                Customer customer = iterator.next();
+
+                // Check if email and password match
+                if (customer.getEmail().equals(emailaddress) && customer.getPassword().equals(password)) {
+                    System.out.println("Sikeres bejelentkezés");
+                    String choice = afterLogin();
+                    return choice.equals("2") || choice.equals("n");
+                }
             }
-
         }
         Customer c = new Customer(emailaddress);
 

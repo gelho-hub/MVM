@@ -6,7 +6,9 @@ public class Main {
         while(true){
             while (opening){
                 opening = Menu.openingMenuAndLogout(); // just an offer to make an other profile or login
-
+                if(!opening){
+                    break;
+                }
             }
 
             System.out.println(" 1 - Szerződés adatai");
