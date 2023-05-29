@@ -1,18 +1,19 @@
 package MVMContract;
 
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class CheckingMethods {
 
     public static int checkIntTypeForInput(){ // method for check whether is it a valid int
-
+        Scanner sc = new Scanner(System.in);
         //sc = new Scanner(System.in);
         try{
-            return IO.sc.nextInt();
+            return sc.nextInt();
         }catch(InputMismatchException e){
             return 0;
         }finally {
-            IO.sc.nextLine();
+            sc.nextLine();
         }
     }
     public static int checkIntTypeForVariable(String num){ // method for check whether is it a valid int PARAMETERIZED

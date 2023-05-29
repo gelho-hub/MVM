@@ -1,61 +1,79 @@
 package MVMContract;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Invoice {
-    private Customer name;
-    private Customer email; // tulaj, akinek szól
+    private Customer owner; // tulaj, akinek szól
     private int actualAmountOfPayable;
     private LocalDate dateOFIssue; // idopont, amikor befizetesre kerult sor
-    private LocalDate deadline; // hatarido
+    private LocalDate deadline; // hatarido --> ez megy a Contract osztály
     private boolean isFulfilled; // whether paid in or not
-    private MVMContract.Customer customer;
+    private String invoiceID;
 
-    //public static ArrayList<Invoice> invoices = new ArrayList<>();
-
-    public Invoice(Customer name, Customer email, int actualAmountOfPayable, LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled,
-                   MVMContract.Customer Customer) {
-        this.name = name;
-        this.email = email;
+    public Invoice(Customer owner, int actualAmountOfPayable, LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled, String invoiceID) {
+        this.owner = owner;
         this.actualAmountOfPayable = actualAmountOfPayable;
         this.dateOFIssue = dateOFIssue;
         this.deadline = deadline;
-        this.isFulfilled = isFulfilled;
-        this.customer = Customer;
+        this.isFulfilled = false;
+        this.invoiceID = invoiceID;
+    }
+
+    public Invoice(){
+
     }
 
     // Methods:
 
-    public static int delayedPayment(LocalDate dateOfIssue, LocalDate actualPaymentDate){
+    public String createInvoiceID(LocalDate dateOFIssue){
+        int year = dateOFIssue.getYear();
+        int month = dateOFIssue.getMonthValue();
+        int day = dateOFIssue.getDayOfMonth();
+
+        String y = Integer.toString(year);
+        String m = Integer.toString(month);
+        String d = Integer.toString(day);
+
+        return d + m + y;
+    }
+
+    public static Invoice read(String fileName){
+        Invoice readInvoices;
+        try {
+            FileInputStream f = new FileInputStream(fileName);
+            ObjectInputStream obj = new ObjectInputStream(f);
+            readInvoices = (Invoice)obj.readObject();
+            obj.close();
+            return readInvoices;
+        }
+        catch (FileNotFoundException e){
+            return null;
+        }
+        catch (ClassNotFoundException | IOException e) {
+            return null;
+        }
+    }
+
+    public int delayedPayment(LocalDate dateOfIssue, LocalDate actualPaymentDate){
         return 5;
     }
 
-    public static Invoice createNewInvoice(Customer name, Customer email, int actualAmountOfPayable,
-                                           LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled, MVMContract.Customer customer){
-        return new Invoice(name, email, actualAmountOfPayable, dateOFIssue, deadline, isFulfilled, customer);
+    public static Invoice createNewInvoice(Customer name, int actualAmountOfPayable,
+                                           LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled, String invoiceID){
+        return new Invoice(name, actualAmountOfPayable, dateOFIssue, deadline, isFulfilled, invoiceID);
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public Customer getOwner(){
+        return owner;
     }
 
-    public Customer getCustomer(){
-        return customer;
-    }
-
-    public Customer getName() {
-        return name;
-    }
-
-    public void setName(Customer name) {
-        this.name = name;
-    }
-    public Customer getEmail() {
-        return email;
-    }
-
-    public void setEmail(Customer email) {
-        this.email = email;
-    }
     public int getActualAmountOfPayable() {
         return actualAmountOfPayable;
     }
@@ -80,13 +98,6 @@ public class Invoice {
         this.deadline = deadline;
     }
 
-    public Customer getOwner(){
-        return email;
-    }
-    public void setOwner(Customer email){
-        this.email = email;
-    }
-
     public boolean isFulfilled() {
         return isFulfilled;
     }
@@ -95,5 +106,11 @@ public class Invoice {
         this.isFulfilled = isFulfilled;
     }
 
+    public String getInvoiceID() {
+        return invoiceID;
+    }
 
+    public void setInvoiceID(String invoiceID) {
+        this.invoiceID = invoiceID;
+    }
 }

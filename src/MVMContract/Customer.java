@@ -1,9 +1,13 @@
 package MVMContract;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Customer {
+public class Customer implements Serializable{
     private String nickname;
     private String password;
     private String email;
@@ -12,27 +16,20 @@ public class Customer {
     private Contract contract;
     private Invoice invoice;
 
-
-
-    public static ArrayList<Contract> contracts = new ArrayList<>();
-    public static ArrayList<Invoice> invoices = new ArrayList<>();
-
-    // static: mindenhonnan elérhető
-    // public static ArrayList<Customer> profiles = new ArrayList<>();
+    private ArrayList<Invoice> invoices = new ArrayList<>();
 
     public Customer(){
 
     }
 
-    public Customer(String nickname, String password, String email, String name, LocalDate yearOfBirth, // constructor with contract and invoice
-                    Contract contract, Invoice invoice){
+    public Customer(String nickname, String password, String email, String name, LocalDate yearOfBirth, // constructor with contract
+                    Contract contract){
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.contract = contract;
-        this.invoice = invoice;
     }
     public Customer(String email){
         this.email = email;
@@ -48,31 +45,36 @@ public class Customer {
 
     // methods
 
-    public static boolean hasInvoice(MVMContainer container){
-        for (int i = 0; i < MVMContainer.customers.size(); i++) {
-            if(MVMContainer.customers.get(i).getName().equals(invoices.get(i).getName().toString())){
-                return true;
-            }
-        }
-        return false;
+    public void addInvoice(Invoice invoice){ // ezzel fogunk egy újonnan létrehozott számlát hozzáadni a listához
+        invoices.add(invoice);
     }
+
+    public Invoice getInvoice(String name){
+        for (Invoice invoice : invoices){
+            if(name.equals(invoice.getOwner().name)) return invoice;
+        }
+        return null;
+    }
+
+    public void write(String fileName){
+        try {
+            FileOutputStream f = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(f);
+            out.writeObject(this);
+            out.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            System.err.println("Sikertelen írás");
+        }
+    }
+
+
 
     // getters, setters
-    public static ArrayList<Contract> getContracts() {
-        return contracts;
-    }
-
-    public static void setContracts(ArrayList<Contract> contracts) {
-        Customer.contracts = contracts;
-    }
-
-    public static ArrayList<Invoice> getInvoices() {
+    public ArrayList<Invoice> getInvoices() {
         return invoices;
     }
 
-    public static void setInvoices(ArrayList<Invoice> invoices) {
-        Customer.invoices = invoices;
-    }
     public String getEmail() {
         return email;
     }
