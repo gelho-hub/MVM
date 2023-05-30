@@ -21,7 +21,7 @@ public class Register extends UserAction{
         email = sc.nextLine();
         System.out.print("Név: ");
         name = sc.nextLine();
-        System.out.print("Születési év: ");
+        System.out.print("Születési dátum: (YYYY, MM, DD)");
         yearOfBirth = sc.nextLine();
         DateValidator.checkDate(yearOfBirth);
 

@@ -172,6 +172,7 @@ public class Running implements Serializable {
             for (int i = 0; i < customer.getInvoices().size(); i++) {
                 System.out.println("Fizetendő összeg: " + customer.getInvoices().get(i).getActualAmountOfPayable());
             }
+            System.out.println(" ");
         }
         //todo
     }
@@ -179,16 +180,14 @@ public class Running implements Serializable {
     private void listOwnData(){
         Scanner sc = new Scanner(System.in);
 
-        /*for (Customer customer1 : customers.getCustomers()){ // itt volt az egyik módosítás
-            if (customer1.getName().equals(customers.getCustomers())){
-                System.out.println(customer1.getName());
-            }
-        }*/
+        customer = customers.getCustomer(username); //todo itt az egyik mod
 
-        customer = customers.getCustomer(username);
-        System.out.println(customer.getName());
-        /*System.out.println(customers);
-        System.out.println(customer.getName());*/
+        System.out.println("Név: " + customer.getName());
+        System.out.println("Felhasználónév: " + customer.getNickname());
+        System.out.println("Email: " + customer.getEmail());
+        System.out.println("Születési dátum: " + customer.getYearOfBirth());
+
+        System.out.println(" ");
         System.out.println("Kilépéshez: v");
         if(sc.nextLine().equals("v")){
             return;
@@ -215,7 +214,7 @@ public class Running implements Serializable {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("1 - Név");
-        System.out.println("2 - Becenév");
+        System.out.println("2 - Felhasználónév");
         System.out.println("3 - Jelszó");
         System.out.println("4 - Email");
         System.out.println("0 - Kilépés");
@@ -274,7 +273,7 @@ public class Running implements Serializable {
 
 
 
-        //customers.removeCustomer(/*customer*/);
+        customers.removeCustomer(/*customer*/);
 
         customer.setNickname(newNickName);
         customers.addCustomer(new Customer(newNickName, customer.getPassword(), customer.getEmail(),
