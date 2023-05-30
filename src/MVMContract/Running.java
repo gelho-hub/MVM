@@ -1,10 +1,11 @@
 package MVMContract;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Running {
+public class Running implements Serializable {
     private Customers customers;
     private Register register;
     private Login login;
@@ -19,15 +20,12 @@ public class Running {
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println(" 1 - Szerződés adatai");
-            //System.out.println(" 2 - Számlák listázása");
+            System.out.println(" 2 - Számlák listázása");
             System.out.println(" 3 - Saját adatok kilistázása");
             System.out.println(" 4 - Adatmódosítás");
-            //System.out.println(" 5 - Szerződés létrehozása");
-            System.out.println(" 6 - Számla létrehozása");
-            //System.out.println(" 7 - Befizetés");
-            //System.out.println(" 8 - Hátralévő befizetések");
-            System.out.println(" 9 - Kijelentkezés");
-            System.out.println("10 - Kilépés");
+            System.out.println(" 5 - Számla létrehozása");
+            System.out.println(" 6 - Kijelentkezés");
+            System.out.println(" 7 - Kilépés");
             
             command = Integer.parseInt(sc.nextLine());
             switch (command) {
@@ -35,7 +33,7 @@ public class Running {
                     getContractData();
                     break;
                 case 2:
-                    listContracts();
+                    listInvoices(); //todo
                     break;
                 case 3:
                     listOwnData();
@@ -44,12 +42,15 @@ public class Running {
                 case 4:
                     editData();
                     break;
-                case 6:
+                case 5:
                     createInvoice();
-                case 9:
+                    break;
+                case 6:
                     loginMenu();
-                case 10:
+                    break;
+                case 7:
                     sc.close();
+                    customers.write("customers.ser");
                     System.exit(0);
                     break;
                 default:
@@ -129,16 +130,12 @@ public class Running {
         }
     }
 
-    private void editingMenu(){
-
-    }
-
-    private void readInvoices(String filename){
-        invoice = Invoice.read(filename);
+    /*private void readInvoices(String filename){
+        invoice = Customer.read(filename);
         if(invoice == null){
             invoice = new Invoice();
         }
-    }
+    }*/
 
 
     private void readCustomers(String filename){
@@ -163,43 +160,54 @@ public class Running {
         }
     }
 
-    private void listContracts(){
+    private void listInvoices(){
+        if (customer.getInvoices().size() == 0){
+            System.out.println("Még nincs számlád létrehozva.");
+        }else{
+            /*for (int i = 0; i < customer.getInvoices().size(); i++) {
+                System.out.println(*//*"ID: " + customer.getInvoices().get(i).getInvoiceID() +*//* "Név: " +
+                        customer.getInvoices().get(i).getOwner().getName() + " "+ customer.getInvoices().get(i).getDateOFIssue() + " "+
+                        "Határidő: " + customer.getInvoices().get(i).getDeadline() + " " + customer.getInvoices().get(i).getActualAmountOfPayable());
+            }*/
+            for (int i = 0; i < customer.getInvoices().size(); i++) {
+                System.out.println("Fizetendő összeg: " + customer.getInvoices().get(i).getActualAmountOfPayable());
+            }
+        }
         //todo
     }
 
     private void listOwnData(){
         Scanner sc = new Scanner(System.in);
-        for (Customer customer1 : customers.getCustomers()){
-            System.out.println("Név: "+customer1.getName() +"\n"+"Felhaszálónév: "+ customer1.getNickname() +"\n"+
-                    "Email cím: "+ customer1.getEmail() +"\n"+"Születési dátum: "+ customer1.getYearOfBirth());
+
+        for (Customer customer1 : customers.getCustomers()){ // itt volt az egyik módosítás
+            System.out.println(customer1.getName()); // todo nem jó mert az összes nevet kilistázza
         }
+
+
+        /*System.out.println(customers);
+        System.out.println(customer.getName());*/
         System.out.println("Kilépéshez: v");
         if(sc.nextLine().equals("v")){
             return;
         }
         sc.close();
     }
-    private void createInvoice(){
+    private void createInvoice() {
 
         Random rnd = new Random();
         int min = 5000;
         int max = 30000;
 
-        readInvoices("invoices.ser");
         LocalDate date = LocalDate.now();
         int newRndNum = rnd.nextInt(max - min + 1) + max;
 
-        customer.addInvoice(new Invoice(invoice.getOwner(), newRndNum, date,
-                date.plusWeeks(1), true, invoice.createInvoiceID(date)));
-        customer.write("invoices.ser");
-
+        customer.setInvoice(new Invoice(customer, newRndNum, date,
+                date.plusWeeks(1), false));
     }
+    /*private void createContract(){ //todo létrehozni Szerződést!
+        customer.getContract();
 
-
-
-    private void createContract(){
-
-    }
+    }*/
     private void editData(){
         Scanner sc = new Scanner(System.in);
 
@@ -223,8 +231,10 @@ public class Running {
                 break;
             case "3":
                 modifyPASSWORD();
+                break;
             case "4":
                 modifyEMAIL();
+                break;
             default:
                 return;
         }
@@ -261,7 +271,7 @@ public class Running {
 
 
 
-        customers.removeCustomer(/*customer*/);
+        //customers.removeCustomer(/*customer*/);
 
         customer.setNickname(newNickName);
         customers.addCustomer(new Customer(newNickName, customer.getPassword(), customer.getEmail(),

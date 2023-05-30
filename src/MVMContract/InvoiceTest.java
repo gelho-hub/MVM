@@ -39,15 +39,8 @@ public class InvoiceTest {
         // Create an instance of the Invoice class
         Invoice invoice = new Invoice();
 
-        // Call the method to be tested
-        Invoice readInvoices = Invoice.read(fileName);
-
-        // Perform assertions to verify the expected behavior
 
 
-
-        // Assertion 2: The returned invoice should have valid properties (example assertion)
-        assertNotNull(readInvoices.getOwner());
     }
 
     @org.junit.Test

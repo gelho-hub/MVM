@@ -28,7 +28,6 @@ public class Register extends UserAction{
         System.out.println("A formátum eddig jó. ");// just for self-check
         String[] birthdayElements = yearOfBirth.split(", ");
 
-        // Contract newContract = new Contract(fullname, LocalDate.now(), LocalDate.now().plusMonths(1), createContractNum(LocalDate.now()));
 
         LocalDate localbirthday = DateValidator.splitDateElements(birthdayElements);
         customers.addCustomer(new Customer(username, password, email, name, localbirthday));

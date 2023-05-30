@@ -1,10 +1,7 @@
 package MVMContract;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Customer implements Serializable{
@@ -31,6 +28,15 @@ public class Customer implements Serializable{
         this.yearOfBirth = yearOfBirth;
         this.contract = contract;
     }
+    /*public Customer(String nickname, String password, String email, String name, LocalDate yearOfBirth, // constructor with invoice
+                   Invoice invoice){
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.invoice = invoice;
+    }*/
     public Customer(String email){
         this.email = email;
     }
@@ -45,9 +51,9 @@ public class Customer implements Serializable{
 
     // methods
 
-    public void addInvoice(Invoice invoice){ // ezzel fogunk egy újonnan létrehozott számlát hozzáadni a listához
+    /*public void addInvoice(Invoice invoice){ // ezzel fogunk egy újonnan létrehozott számlát hozzáadni a listához
         invoices.add(invoice);
-    }
+    }*/
 
     public Invoice getInvoice(String name){
         for (Invoice invoice : invoices){
@@ -56,7 +62,7 @@ public class Customer implements Serializable{
         return null;
     }
 
-    public void write(String fileName){
+    /*public void write(String fileName){
         try {
             FileOutputStream f = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(f);
@@ -66,7 +72,24 @@ public class Customer implements Serializable{
             exception.printStackTrace();
             System.err.println("Sikertelen írás");
         }
-    }
+    }*/
+
+    /*public static Invoice read(String fileName){ // újonnan létrehozott metódus ami a számlákat hivatott kiírni fájlba
+        Invoice readInvoices;
+        try {
+            FileInputStream f = new FileInputStream(fileName);
+            ObjectInputStream obj = new ObjectInputStream(f);
+            readInvoices = (Invoice)obj.readObject();
+            obj.close();
+            return readInvoices;
+        }
+        catch (FileNotFoundException e){
+            return null;
+        }
+        catch (ClassNotFoundException | IOException e) {
+            return null;
+        }
+    }*/
 
 
 
@@ -128,5 +151,6 @@ public class Customer implements Serializable{
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+        invoices.add(invoice);
     }
 }

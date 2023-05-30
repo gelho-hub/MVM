@@ -1,29 +1,25 @@
 package MVMContract;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Invoice {
+public class Invoice implements Serializable {
     private Customer owner; // tulaj, akinek szól
     private int actualAmountOfPayable;
     private LocalDate dateOFIssue; // idopont, amikor befizetesre kerult sor
     private LocalDate deadline; // hatarido --> ez megy a Contract osztály
-    private boolean isFulfilled; // whether paid in or not
+    private boolean isFulfilled; // befizette vagy sem
     private String invoiceID;
 
-    public Invoice(Customer owner, int actualAmountOfPayable, LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled, String invoiceID) {
+    public Invoice(Customer owner, int actualAmountOfPayable, LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled) {
         this.owner = owner;
         this.actualAmountOfPayable = actualAmountOfPayable;
         this.dateOFIssue = dateOFIssue;
         this.deadline = deadline;
         this.isFulfilled = false;
-        this.invoiceID = invoiceID;
     }
 
     public Invoice(){
@@ -44,30 +40,15 @@ public class Invoice {
         return d + m + y;
     }
 
-    public static Invoice read(String fileName){
-        Invoice readInvoices;
-        try {
-            FileInputStream f = new FileInputStream(fileName);
-            ObjectInputStream obj = new ObjectInputStream(f);
-            readInvoices = (Invoice)obj.readObject();
-            obj.close();
-            return readInvoices;
-        }
-        catch (FileNotFoundException e){
-            return null;
-        }
-        catch (ClassNotFoundException | IOException e) {
-            return null;
-        }
-    }
+
 
     public int delayedPayment(LocalDate dateOfIssue, LocalDate actualPaymentDate){
         return 5;
     }
 
     public static Invoice createNewInvoice(Customer name, int actualAmountOfPayable,
-                                           LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled, String invoiceID){
-        return new Invoice(name, actualAmountOfPayable, dateOFIssue, deadline, isFulfilled, invoiceID);
+                                           LocalDate dateOFIssue, LocalDate deadline, boolean isFulfilled){
+        return new Invoice(name, actualAmountOfPayable, dateOFIssue, deadline, isFulfilled);
     }
 
     public Customer getOwner(){
