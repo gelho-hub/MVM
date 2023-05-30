@@ -30,13 +30,15 @@ public class Customers implements Serializable{
     
     public Customer getCustomer(String username){
         for (Customer customer : customers) {
-            if (username.equals(customer.getName())) return customer;
+            if (username.equals(customer.getNickname())) return customer;
         }
         return null;
     }
     public boolean isCustomerAdded(String username){
         for (Customer customer : customers) {
-            return (username.equals(customer.getNickname())) ? true : false;
+            if (username.equals(customer.getNickname())){
+                return true;
+            }
         }
         return false;
     }

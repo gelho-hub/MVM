@@ -179,11 +179,14 @@ public class Running implements Serializable {
     private void listOwnData(){
         Scanner sc = new Scanner(System.in);
 
-        for (Customer customer1 : customers.getCustomers()){ // itt volt az egyik módosítás
-            System.out.println(customer1.getName()); // todo nem jó mert az összes nevet kilistázza
-        }
+        /*for (Customer customer1 : customers.getCustomers()){ // itt volt az egyik módosítás
+            if (customer1.getName().equals(customers.getCustomers())){
+                System.out.println(customer1.getName());
+            }
+        }*/
 
-
+        customer = customers.getCustomer(username);
+        System.out.println(customer.getName());
         /*System.out.println(customers);
         System.out.println(customer.getName());*/
         System.out.println("Kilépéshez: v");
