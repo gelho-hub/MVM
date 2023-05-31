@@ -153,4 +153,8 @@ public class Customer implements Serializable{
         this.invoice = invoice;
         invoices.add(invoice);
     }
+
+    public void createContract(){
+        Contract newContract = new Contract();
+    }
 }

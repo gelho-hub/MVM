@@ -170,7 +170,10 @@ public class Running implements Serializable {
                         "Határidő: " + customer.getInvoices().get(i).getDeadline() + " " + customer.getInvoices().get(i).getActualAmountOfPayable());
             }*/
             for (int i = 0; i < customer.getInvoices().size(); i++) {
-                System.out.println("Fizetendő összeg: " + customer.getInvoices().get(i).getActualAmountOfPayable());
+                System.out.println("NÉV: "+ customer.getInvoices().get(i).getOwner().getName()+" " +"Dátum: " +
+                        customer.getInvoices().get(i).getDateOFIssue()+" "+"Határidő: " +
+                        customer.getInvoices().get(i).getDeadline()+ " "+"Fizetendő összeg: " +
+                        customer.getInvoices().get(i).getActualAmountOfPayable());
             }
             System.out.println(" ");
         }
@@ -201,7 +204,7 @@ public class Running implements Serializable {
         int max = 30000;
 
         LocalDate date = LocalDate.now();
-        int newRndNum = rnd.nextInt(max - min + 1) + max;
+        int newRndNum = rnd.nextInt(max - min + 1) /*+ max*/;
 
         customer.setInvoice(new Invoice(customer, newRndNum, date,
                 date.plusWeeks(1), false));
