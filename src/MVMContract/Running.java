@@ -30,23 +30,25 @@ public class Running implements Serializable {
             command = Integer.parseInt(sc.nextLine());
             switch (command) {
                 case 1:
-                    getContractData();
+                    getContractData(); //todo modosit
                     break;
                 case 2:
-                    listInvoices(); //todo
+                    listInvoices();
                     break;
                 case 3:
-                    listOwnData();
+                    listOwnData(); //todo modosit
                     break;
                     //todo --> list own data
                 case 4:
                     editData();
+                    customers.write("customers.ser");
                     break;
                 case 5:
                     createInvoice();
                     break;
                 case 6:
                     loginMenu();
+                    customers.write("customers.ser");
                     break;
                 case 7:
                     sc.close();
@@ -54,6 +56,7 @@ public class Running implements Serializable {
                     System.exit(0);
                     break;
                 default:
+                    System.out.println("Nincs ilyen menüpont, kérlek a fentiekből válassz!");
                     break;
             }
         }
@@ -153,10 +156,15 @@ public class Running implements Serializable {
 
     private void getContractData(){
         if(customer.getContract() == null){
-            System.out.println("Még nincs szerződésed");
+            System.out.println("Még nincs szerződésed"); //todo itt modosult
         }else{
-            System.out.println("Név: " + customer.getContract().getContractNumber() + "\nJelszó: " + customer.getPassword()
-                    + "\nBecenév: " + customer.getNickname());
+            System.out.println("Szerződésszám: " + customer.getContract().getContractNumber() + "\n" +
+                    "Szerződéskötés ideje: " + customer.getContract().getAccOpeningTime() + " --- " +
+                    customer.getContract().getTime().getHour() +":"+customer.getContract().getTime().getMinute() + "\n" +
+                    "Név: " + customer.getName()
+                    + "\nFelhasználónév: " + customer.getNickname());
+
+            System.out.println(" ");
         }
     }
 
@@ -170,7 +178,7 @@ public class Running implements Serializable {
                         "Határidő: " + customer.getInvoices().get(i).getDeadline() + " " + customer.getInvoices().get(i).getActualAmountOfPayable());
             }*/
             for (int i = 0; i < customer.getInvoices().size(); i++) {
-                System.out.println("NÉV: "+ customer.getInvoices().get(i).getOwner().getName()+" " +"Dátum: " +
+                System.out.println("NÉV: "+ customer.getInvoices().get(i).getOwner().getName()+" " +"Dátum: " + //todo mod
                         customer.getInvoices().get(i).getDateOFIssue()+" "+"Határidő: " +
                         customer.getInvoices().get(i).getDeadline()+ " "+"Fizetendő összeg: " +
                         customer.getInvoices().get(i).getActualAmountOfPayable());
@@ -206,8 +214,15 @@ public class Running implements Serializable {
         LocalDate date = LocalDate.now();
         int newRndNum = rnd.nextInt(max - min + 1) /*+ max*/;
 
+        if (customer.getContract() == null){
+            System.out.println("Még nincs szerződésed, hozz létre egyet, hogy kiállíthass számlát!");
+            return;
+        }
         customer.setInvoice(new Invoice(customer, newRndNum, date,
                 date.plusWeeks(1), false));
+
+        System.out.println("Számla sikeresen létrehozva!");
+        System.out.println(" ");
     }
     /*private void createContract(){ //todo létrehozni Szerződést!
         customer.getContract();
@@ -271,7 +286,7 @@ public class Running implements Serializable {
         Scanner sc = new Scanner(System.in);
 
 
-        System.out.println("Új név: ");
+        System.out.println("Új felhasználónév: ");
         String newNickName = sc.nextLine();
 
 
